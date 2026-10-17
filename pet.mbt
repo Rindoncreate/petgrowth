@@ -266,6 +266,11 @@ pub fn day_number(iso : String) -> Int32? {
   if iso.length() != 10 || iso[4:5] != "-" || iso[7:8] != "-" {
     return None
   }
+  for index, ch in iso.iter2() {
+    if index != 4 && index != 7 && (ch < '0' || ch > '9') {
+      return None
+    }
+  }
   let year = @string.parse_int(iso[0:4]) catch { _ => return None }
   let month = @string.parse_int(iso[5:7]) catch { _ => return None }
   let day = @string.parse_int(iso[8:10]) catch { _ => return None }
