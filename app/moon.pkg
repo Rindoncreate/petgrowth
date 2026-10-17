@@ -1,0 +1,12 @@
+import {
+  "rindoncreate/petgrowth",
+  "moonbit-community/rabbita",
+  "moonbit-community/rabbita/html",
+  "moonbit-community/rabbita/svg",
+  "moonbit-community/rabbita/cmd" @rcmd,
+  "moonbitlang/core/string",
+}
+
+supported_targets = "js"
+
+pkgtype(kind: "executable")

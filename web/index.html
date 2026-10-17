@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#fbfaf6" />
+    <link rel="preload" href="/assets/Yozai-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <meta name="description" content="用爪记，收藏和宠物一起长大的每一天。" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
+    <link rel="stylesheet" href="/style.css" />
+    <title>爪记 · 宠物成长手记</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="/helpers.js"></script>
+    <script src="/app.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+      }
+    </script>
+  </body>
+</html>

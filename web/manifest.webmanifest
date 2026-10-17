@@ -1,0 +1,11 @@
+{
+  "name": "爪记 · 宠物成长手记",
+  "short_name": "爪记",
+  "description": "收藏和宠物一起长大的每一天",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fbfaf6",
+  "theme_color": "#fbfaf6",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
