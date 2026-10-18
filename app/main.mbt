@@ -55,7 +55,7 @@ priv enum Msg {
 }
 
 ///|
-extern "js" fn load_saved() -> String = "() => localStorage.getItem('petgrowth-v1') || ''"
+extern "js" fn load_saved() -> String = "() => { try { return localStorage.getItem('petgrowth-v1') || ''; } catch (_) { return ''; } }"
 
 ///|
 extern "js" fn save_saved(raw : String) -> Bool = "(raw) => { try { localStorage.setItem('petgrowth-v1', raw); return true; } catch (_) { return false; } }"
@@ -102,24 +102,6 @@ fn initial_model() -> Model {
     modal: "",
     detail_id: 0,
     menu_open: false,
-  }
-}
-
-///|
-fn commit(
-  model : Model,
-  journal : @petgrowth.Journal,
-  success : String,
-) -> Model {
-  let saved = save_saved(@petgrowth.encode_journal(journal))
-  {
-    ..model,
-    journal,
-    notice: if saved {
-      success
-    } else {
-      "手机存储空间不足，请先导出备份。"
-    },
   }
 }
 
@@ -259,21 +241,22 @@ fn update(
           model.diary_text,
           model.photo,
         ) {
-        Some(journal) => {
-          set_demo_url(false)
+        Some(journal) =>
           (
             @rcmd.none,
-            {
-              ..commit(model, journal, "今天的回忆收好了。"),
-              diary_text: "",
-              photo: "",
-              page: "home",
-              modal: "",
-              demo: false,
-              card_index: 0,
-            },
+            commit_with(model, journal, "今天的回忆收好了。", saved => {
+              set_demo_url(false)
+              {
+                ..saved,
+                diary_text: "",
+                photo: "",
+                page: "home",
+                modal: "",
+                demo: false,
+                card_index: 0,
+              }
+            }),
           )
-        }
         None =>
           (
             @rcmd.none,
@@ -287,20 +270,21 @@ fn update(
       let grams = @petgrowth.parse_weight_kg(model.weight_text).unwrap_or(0)
       match
         @petgrowth.add_weight(model.journal, model.date, grams, model.photo) {
-        Some(journal) => {
-          set_demo_url(false)
+        Some(journal) =>
           (
             @rcmd.none,
-            {
-              ..commit(model, journal, "体重已经记下来啦。"),
-              weight_text: "",
-              photo: "",
-              page: "growth",
-              modal: "",
-              demo: false,
-            },
+            commit_with(model, journal, "体重已经记下来啦。", saved => {
+              set_demo_url(false)
+              {
+                ..saved,
+                weight_text: "",
+                photo: "",
+                page: "growth",
+                modal: "",
+                demo: false,
+              }
+            }),
           )
-        }
         None =>
           (
             @rcmd.none,
@@ -314,27 +298,22 @@ fn update(
     DeleteDiary(id) =>
       (
         @rcmd.none,
-        {
-          ..commit(
-            model,
-            @petgrowth.remove_diary(model.journal, id),
-            "这条日记已删除。",
-          ),
-          modal: "",
-          card_index: 0,
-        },
+        commit_with(
+          model,
+          @petgrowth.remove_diary(model.journal, id),
+          "这条日记已删除。",
+          saved => { ..saved, modal: "", card_index: 0, },
+        ),
       )
     DeleteWeight(id) =>
       (
         @rcmd.none,
-        {
-          ..commit(
-            model,
-            @petgrowth.remove_weight(model.journal, id),
-            "这次体重记录已删除。",
-          ),
-          modal: "",
-        },
+        commit_with(
+          model,
+          @petgrowth.remove_weight(model.journal, id),
+          "这次体重记录已删除。",
+          saved => { ..saved, modal: "", },
+        ),
       )
     ToggleReminder => {
       let enabled = !model.journal.reminders_enabled
@@ -363,12 +342,18 @@ fn update(
         Some(journal) =>
           (
             @rcmd.none,
-            {
-              ..commit(model, journal, "备份已恢复。"),
-              name: journal.pet.name,
-              birthday: journal.pet.birthday,
-              arrival_day: journal.pet.arrival_day,
-            },
+            commit_with(model, journal, "备份已恢复。", saved => {
+              set_demo_url(false)
+              {
+                ..saved,
+                name: journal.pet.name,
+                birthday: journal.pet.birthday,
+                arrival_day: journal.pet.arrival_day,
+                demo: false,
+                card_index: 0,
+                modal: "",
+              }
+            }),
           )
         None =>
           (
