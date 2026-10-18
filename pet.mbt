@@ -111,7 +111,8 @@ fn valid_journal(journal : Journal) -> Bool {
       return false
     }
   }
-  if journal.pet.birthday != "" && journal.pet.arrival_day != "" &&
+  if journal.pet.birthday != "" &&
+    journal.pet.arrival_day != "" &&
     journal.pet.birthday > journal.pet.arrival_day {
     return false
   }
@@ -369,7 +370,9 @@ pub fn reminder_text(
   today : String,
   variant : Int32,
 ) -> String? {
-  if !journal.reminders_enabled || journal.pet.name.length() == 0 {
+  if !journal.reminders_enabled ||
+    journal.pet.name.length() == 0 ||
+    day_number(today) is None {
     return None
   }
   let days = latest_diary_gap(journal, today)
