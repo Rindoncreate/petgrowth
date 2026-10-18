@@ -233,16 +233,23 @@ fn update(
         )
       }
     SavePet =>
-      if model.name.trim().length() == 0 {
-        (@rcmd.none, { ..model, notice: "先给小家伙起个名字吧。", })
-      } else {
-        let journal = @petgrowth.set_pet(
+      match
+        @petgrowth.try_set_pet(
           model.journal,
           model.name,
           model.birthday,
           model.arrival_day,
-        )
-        (@rcmd.none, commit(model, journal, "宠物档案已保存。"))
+        ) {
+        Some(journal) =>
+          (@rcmd.none, commit(model, journal, "宠物档案已保存。"))
+        None =>
+          (
+            @rcmd.none,
+            {
+              ..model,
+              notice: "请填写名字，并检查生日与到家日；不知道的日期可以留空。",
+            },
+          )
       }
     SaveDiary =>
       match

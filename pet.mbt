@@ -111,6 +111,10 @@ fn valid_journal(journal : Journal) -> Bool {
       return false
     }
   }
+  if journal.pet.birthday != "" && journal.pet.arrival_day != "" &&
+    journal.pet.birthday > journal.pet.arrival_day {
+    return false
+  }
   let ids : Map[Int32, Bool] = Map([])
   for entry in journal.diaries {
     if entry.id < 1 ||
@@ -152,6 +156,28 @@ pub fn set_pet(
     ..journal,
     pet: { ..journal.pet, name: name.trim().to_owned(), birthday, arrival_day, },
   }
+}
+
+///|
+/// Update a profile only when optional dates are valid and ordered.
+pub fn try_set_pet(
+  journal : Journal,
+  name : String,
+  birthday : String,
+  arrival_day : String,
+) -> Journal? {
+  if name.trim().length() == 0 {
+    return None
+  }
+  for date in [birthday, arrival_day] {
+    if date != "" && day_number(date) is None {
+      return None
+    }
+  }
+  if birthday != "" && arrival_day != "" && birthday > arrival_day {
+    return None
+  }
+  Some(set_pet(journal, name, birthday, arrival_day))
 }
 
 ///|
