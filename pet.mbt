@@ -208,7 +208,19 @@ pub fn diaries_newest_first(journal : Journal) -> Array[DiaryEntry] {
 ///|
 pub fn weights_oldest_first(journal : Journal) -> Array[WeightEntry] {
   let result = journal.weights.copy()
-  result.sort_by_key(entry => "\{entry.date}-\{entry.id}")
+  result.sort_by((a, b) => {
+    if a.date < b.date {
+      -1
+    } else if a.date > b.date {
+      1
+    } else if a.id < b.id {
+      -1
+    } else if a.id > b.id {
+      1
+    } else {
+      0
+    }
+  })
   result
 }
 
