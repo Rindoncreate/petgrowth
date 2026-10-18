@@ -19,5 +19,7 @@ jobs:
         run: |
           curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s latest
           echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+      - name: Update Mooncakes registry index
+        run: moon update
       - name: Check, test, run example, build and package
         run: node scripts/verify.mjs

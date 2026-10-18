@@ -5,4 +5,5 @@ set -euo pipefail
 curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s latest
 export PATH="$HOME/.moon/bin:$PATH"
 moon version --all
+moon update
 node scripts/build.mjs

@@ -29,6 +29,7 @@
 需要 [MoonBit CLI](https://www.moonbitlang.com/download/) 和 Node.js。项目使用 MoonBit 模块依赖 moonbit-community/rabbita@0.16.5。
 
 ~~~sh
+moon update
 moon check --target js --deny-warn
 moon test --target js --deny-warn
 node scripts/build.mjs
