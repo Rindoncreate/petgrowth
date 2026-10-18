@@ -90,7 +90,7 @@ pub fn decode_journal(raw : String) -> Journal {
 pub fn try_decode_journal(raw : String) -> Journal? {
   try {
     let value : Journal = @json.from_json(@json.parse(raw))
-    if value.next_id < 1 {
+    if !valid_journal(value) {
       None
     } else {
       Some(value)
@@ -98,6 +98,42 @@ pub fn try_decode_journal(raw : String) -> Journal? {
   } catch {
     _ => None
   }
+}
+
+///|
+/// Validate imported records before replacing any saved data.
+fn valid_journal(journal : Journal) -> Bool {
+  if journal.next_id < 1 || journal.next_id >= 2147483647 {
+    return false
+  }
+  for date in [journal.pet.birthday, journal.pet.arrival_day] {
+    if date != "" && day_number(date) is None {
+      return false
+    }
+  }
+  let ids : Map[Int32, Bool] = Map([])
+  for entry in journal.diaries {
+    if entry.id < 1 ||
+      entry.id >= journal.next_id ||
+      ids.contains(entry.id) ||
+      day_number(entry.date) is None ||
+      (entry.text.trim().length() == 0 && entry.photo.length() == 0) {
+      return false
+    }
+    ids.set(entry.id, true)
+  }
+  for entry in journal.weights {
+    if entry.id < 1 ||
+      entry.id >= journal.next_id ||
+      ids.contains(entry.id) ||
+      day_number(entry.date) is None ||
+      entry.grams <= 0 ||
+      entry.grams > 200000 {
+      return false
+    }
+    ids.set(entry.id, true)
+  }
+  true
 }
 
 ///|
@@ -135,6 +171,9 @@ pub fn add_diary(
   text : String,
   photo : String,
 ) -> Journal? {
+  if journal.next_id < 1 || journal.next_id >= 2147483646 {
+    return None
+  }
   let cleaned = text.trim().to_owned()
   if cleaned.length() == 0 && photo.length() == 0 {
     return None
@@ -154,6 +193,9 @@ pub fn add_weight(
   grams : Int32,
   photo : String,
 ) -> Journal? {
+  if journal.next_id < 1 || journal.next_id >= 2147483646 {
+    return None
+  }
   if grams <= 0 || grams > 200000 || day_number(date) is None {
     return None
   }
