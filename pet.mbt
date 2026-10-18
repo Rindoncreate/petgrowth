@@ -205,6 +205,57 @@ pub fn add_weight(
 }
 
 ///|
+/// Parse kilograms as a positive decimal with at most three fractional digits.
+/// Values outside 0.001–200 kg, signs and exponent notation are rejected.
+pub fn parse_weight_kg(raw : String) -> Int32? {
+  let text = raw.trim()
+  let mut whole = 0
+  let mut fraction = 0
+  let mut whole_digits = 0
+  let mut fraction_digits = 0
+  let mut decimal = false
+  for ch in text.iter() {
+    if ch == '.' && !decimal && whole_digits > 0 {
+      decimal = true
+    } else if ch >= '0' && ch <= '9' {
+      let digit = ch.to_int() - '0'.to_int()
+      if decimal {
+        fraction_digits += 1
+        if fraction_digits > 3 {
+          return None
+        }
+        fraction = fraction * 10 + digit
+      } else {
+        whole_digits += 1
+        if whole_digits > 6 {
+          return None
+        }
+        whole = whole * 10 + digit
+        if whole > 200 {
+          return None
+        }
+      }
+    } else {
+      return None
+    }
+  }
+  if whole_digits == 0 || (decimal && fraction_digits == 0) {
+    return None
+  }
+  let scale = match fraction_digits {
+    1 => 100
+    2 => 10
+    _ => 1
+  }
+  let grams = whole * 1000 + fraction * scale
+  if grams <= 0 || grams > 200000 {
+    None
+  } else {
+    Some(grams)
+  }
+}
+
+///|
 pub fn format_grams_kg(grams : Int32) -> String {
   let whole = grams / 1000
   let fraction = grams % 1000

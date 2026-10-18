@@ -277,8 +277,7 @@ fn update(
           )
       }
     SaveWeight => {
-      let value = @string.parse_double(model.weight_text) catch { _ => -1.0 }
-      let grams = (value * 1000.0 + 0.5).to_int()
+      let grams = @petgrowth.parse_weight_kg(model.weight_text).unwrap_or(0)
       match
         @petgrowth.add_weight(model.journal, model.date, grams, model.photo) {
         Some(journal) => {
@@ -300,7 +299,7 @@ fn update(
             @rcmd.none,
             {
               ..model,
-              notice: "请输入有效日期和大于 0 的体重。",
+              notice: "请输入有效日期和 0.001–200 kg 的体重，最多三位小数。",
             },
           )
       }
