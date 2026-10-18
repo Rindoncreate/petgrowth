@@ -1,5 +1,9 @@
 # 爪记 · 宠物成长手记
 
+[![MoonBit CI](https://github.com/Rindoncreate/petgrowth/actions/workflows/ci.yml/badge.svg)](https://github.com/Rindoncreate/petgrowth/actions/workflows/ci.yml)
+
+交付由可复用 MoonBit 核心库、命令行示例和 Rabbita 网页应用组成。根包提供日记、克精度体重、日期排序、JSON 备份校验与问候文案；页面和应用状态也由 MoonBit 实现。JavaScript 仅处理浏览器文件选择、图像压缩和少量浏览器接口。
+
 一款用 MoonBit 编写核心逻辑和界面的宠物成长 PWA。它帮助养宠人按日期保存日记与照片、记录体重变化，并以宠物口吻生成回访文案。本轮根据 BoopLog 公开的 App 截图重做日记与成长页面：米白纸张、手写字体、灰橄榄色、叠放卡片、照片时光轴与浮动工具栏。代码独立实现，示例宠物图片为 AI 生成，非 BoopLog 官方产品。
 
 ![日记页面](docs/screenshots/journal.png)
@@ -38,7 +42,13 @@ node scripts/serve.mjs
 
 在浏览器打开 <http://127.0.0.1:4173/>。`app/main.mbt` 管理状态与持久化，`app/views.mbt` 实现页面，`app/demo.mbt` 提供独立的示例数据。`pet.mbt` 是可独立测试的日记与提醒核心，`web/` 放置静态外壳和浏览器文件接口。`scripts/build.mjs` 生成 `dist/`。
 
-本地已使用 MoonBit v0.10.15 编译，并通过 3 项核心测试。手机视口和交互检查记录见 [verification.md](docs/verification.md)。这不等于 iPhone Safari 真机验收。
+已使用 MoonBit v0.10.15 验证：JavaScript 20 项测试，Wasm GC 与 Wasm 各 18 项测试。后两个后端不包含 2 项浏览器持久化状态测试。统一检查命令：
+
+```sh
+node scripts/verify.mjs
+```
+
+该命令还会核对 [命令行示例](examples/journal/README.md) 的实际输出、构建 PWA 并生成 Mooncakes 源码包。库接口见 [API 说明](docs/api.md)，逐步体验见 [评委复现步骤](docs/demo.md)，手机视口检查见 [验收记录](docs/verification.md)。iPhone Safari 尚未真机验收。
 
 ## 部署
 
@@ -46,6 +56,8 @@ node scripts/serve.mjs
 
 ## 参赛准备
 
-本仓库已有可运行示例、测试、MIT 许可证和 GitHub Actions 配置。正式提交前仍需把仓库发布为公开仓库、确认 CI 在 GitHub 上通过、发布 Mooncakes 包、录制演示，并由参赛者亲自写好符合赛事要求的一页项目提案。提交记录应随着真实开发过程累积，不人为拆分或伪造。
+公开源码：[Rindoncreate/petgrowth](https://github.com/Rindoncreate/petgrowth)。Mooncakes 模块名为 `Rindoncreate/petgrowth`。源代码采用 MIT 许可证；第三方依赖及字体保留各自许可。
+
+赛事要求、已完成证据和待办状态见 [提交审查清单](docs/submission-audit.md)。正式申报书须由参赛者人工撰写；技术文档与 AI 辅助情况见 [AI 使用说明](docs/ai-usage.md)。提交记录随实际开发累积，不以空提交或无意义拆分凑数。
 
 设计参考与素材许可见 [design-reference.md](docs/design-reference.md)。Yozai 字体按 SIL OFL 1.1 分发，许可证保留在 `web/assets/Yozai-OFL.txt`。

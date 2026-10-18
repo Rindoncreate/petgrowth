@@ -1,4 +1,4 @@
-name = "rindoncreate/petgrowth"
+name = "Rindoncreate/petgrowth"
 
 version = "0.1.0"
 

@@ -1,6 +1,6 @@
 # 本地验收记录
 
-日期：2026-10-17。环境：Windows、MoonBit v0.10.15、Codex 内置 Chromium 浏览器。
+界面检查：2026-10-17；工程验收更新：2026-10-18。环境：Windows、MoonBit v0.10.15、Codex 内置 Chromium 浏览器；远端 CI 使用 Ubuntu。
 
 ## 页面与数据流程
 
@@ -21,11 +21,15 @@
 
 ## 代码检查
 
-运行 `moon fmt`、`moon check --target js --deny-warn`、`moon test --target js --deny-warn` 和 `node scripts/build.mjs`。核心测试覆盖日期与闰年、记录排序与提醒间隔、体重输入校验及 JSON 往返。
+统一运行 `node scripts/verify.mjs`：格式检查，JS、Wasm GC、Wasm 的检查和测试，库示例输出核对，PWA 构建、资源检查和源码打包。
+
+结果为 JS 20 项、Wasm GC 18 项、Wasm 18 项全部通过。JS 多出的 2 项是保存失败保留草稿与成功保存的状态测试。新增覆盖日期格式与闰年、同日多次记录的数字排序、备份唯一编号与内容校验、十进制体重输入、档案日期、日记增删和问候边界。
+
+GitHub Actions 已在 [远端成功运行](https://github.com/Rindoncreate/petgrowth/actions/runs/39096226806)。首轮失败为新构建机缺少注册表索引，增加 `moon update` 后通过，没有跳过测试。
 
 ## 仍需外部条件的验收
 
 - iPhone Safari 真机的主屏幕安装、照片选择、离线重开尚未验证。
-- Vercel 配置已提供，本轮没有发布线上部署，GitHub Actions 也尚未在远端运行。
+- Vercel 配置已提供，当前团队访问返回 403，因此没有发布线上部署。
 - iCloud 同步、自动抠图和系统后台推送尚未实现；提醒页已明确显示当前能力范围。
-- 正式参赛仍需公开仓库、有效 CI、Mooncakes 发布、真实开发提交历史、演示材料及参赛者亲写的提案。
+- 公开仓库、真实开发记录、有效 CI 与可复现示例已经具备；包发布和正式报名状态见 [提交审查](submission-audit.md)。申报书需由参赛者本人完成。

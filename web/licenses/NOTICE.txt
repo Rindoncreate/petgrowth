@@ -1,0 +1,25 @@
+PetGrowth / 爪记
+Project source: https://github.com/Rindoncreate/petgrowth
+Project license: MIT (see repository LICENSE)
+
+The compiled application uses these separately licensed components:
+
+Rabbita 0.16.5 — MoonBit community contributors
+Source: https://github.com/moonbit-community/rabbita
+License: Apache License 2.0 (Apache-2.0.txt)
+Used as the UI framework. Upstream source is not copied into this repository.
+
+MoonBit core — MoonBit contributors
+Source: https://github.com/moonbitlang/core
+License: Apache License 2.0 (Apache-2.0.txt)
+Used through the compiler and standard library.
+
+Yozai Regular v0.868
+Source: https://github.com/lxgw/yozai-font
+License: SIL Open Font License 1.1
+Copyright and full font license: ../assets/Yozai-OFL.txt
+The full regular font was converted from TTF to WOFF2 for web delivery.
+
+Demo puppy images: generated with OpenAI imagegen for this project.
+BoopLog: public product screenshots were used as visual references only.
+No BoopLog source code, logo or pet photographs are distributed here.
