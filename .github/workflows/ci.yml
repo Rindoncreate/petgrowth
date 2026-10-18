@@ -8,20 +8,16 @@ on:
 jobs:
   check-test-build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
       - name: Install MoonBit
         run: |
           curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s latest
           echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
-      - name: Check MoonBit
-        run: moon check --target js --deny-warn
-      - name: Test MoonBit
-        run: moon test --target js --deny-warn
-      - name: Build PWA
-        run: node scripts/build.mjs
-      - name: Check static output
-        run: |
-          test -s dist/index.html
-          test -s dist/app.js
-          test -s dist/sw.js
+      - name: Check, test, run example, build and package
+        run: node scripts/verify.mjs

@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "verify": "node scripts/verify.mjs",
     "build": "node scripts/build.mjs",
     "dev": "node scripts/serve.mjs"
   }
