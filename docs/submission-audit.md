@@ -21,8 +21,8 @@
 | README 与可复现步骤 | 根 README、`docs/demo.md`、`docs/api.md`、`examples/journal/README.md` |
 | 可运行示例 | `moon run examples/journal --target js`，实际输出与文档一致 |
 | 核心功能测试 | JS 20 项；Wasm 和 Wasm GC 各 18 项；日期、增删、排序、体重、档案、备份、问候、保存失败均覆盖 |
-| CI 覆盖检查、构建、测试 | [远端成功记录](https://github.com/Rindoncreate/petgrowth/actions/runs/39096226806)，提交 `90cee57`；后续提交继续运行同一流程 |
-| 发布到 Mooncakes | 源码包已通过本地验证，发布状态待注册表确认后更新 |
+| CI 覆盖检查、构建、测试 | [远端成功记录](https://github.com/Rindoncreate/petgrowth/actions/runs/39100865704)，提交 `ed00a6e`；后续提交继续运行同一流程 |
+| 发布到 Mooncakes | 已发布 [Rindoncreate/petgrowth@0.1.0](https://mooncakes.io/docs/Rindoncreate/petgrowth@0.1.0/)，注册表已返回该版本及 MIT、仓库元数据，未撤回；独立消费工程从注册表安装并调用成功，输出 `Pet: 小橘; weight: 4.125 kg` |
 | OSI 开源许可证 | 项目 MIT；第三方许可见 `web/licenses/NOTICE.txt` 和字体 OFL 文件 |
 | 参考范围与 AI 可解释 | `docs/design-reference.md`、`docs/ai-usage.md`；明确公开界面参考、AI 图片和未实现能力 |
 
